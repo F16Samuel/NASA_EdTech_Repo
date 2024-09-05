@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="top-bar-content">
+            <div class="user-profile">
+                <span id="username">User Name</span>
+                <img src="../images/profile-icon.png" alt="Profile" class="profile-icon">
+                <div class="dropdown">
+                    <button class="dropbtn">▼</button>
+                    <div class="dropdown-content">
+                        <a href="dashboard.html">Dashboard</a>
+                        <a href="previously-submitted.html">Previously Submitted Codes</a>
+                        <a href="#">Non Plagiarized Codes List</a>
+                        <a href="#">User Info</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <section class="dashboard-header">
+            <h1>Welcome to Your Dashboard</h1>
+            <h2>Check Code</h2>
+        </section>
+
+        <section class="check-code-section">
+            <textarea id="code-input" placeholder="Paste your code here..."></textarea>
+            <button id="submit-btn">Submit</button>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <p>Checking for Plagiarism...</p>
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 EdTech Platform. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/script.js"></script>
+</body>
+</html>

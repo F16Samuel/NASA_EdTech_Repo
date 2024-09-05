@@ -1,14 +1,9 @@
-// backend/controllers/authController.js
 const User = require('../models/User');
 
-// Signup Controller
-const signup = async (req, res) => {
-  // Signup logic here
+exports.login = (req, res) => {
+    // Logic for user login
 };
 
-// Login Controller
-const login = async (req, res) => {
-  // Login logic here
+exports.signup = (req, res) => {
+    // Logic for user signup
 };
-
-module.exports = { signup, login };
