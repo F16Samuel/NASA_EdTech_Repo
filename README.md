@@ -6,3 +6,7 @@ V1.3 CHANGELOG
 
 The Functionality For Backend has been partially added, Linking Process is yet to be done, Requires More time/effort
 Will be working on it for Round 2 if Selected.
+
+
+HOW TO RUN PROJECT
+--> Run index.html
