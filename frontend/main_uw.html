@@ -119,24 +119,39 @@
         ];
 
         document.getElementById('submitBtn').addEventListener('click', function() {
-            const userCode = document.getElementById('codeInput').value.trim();
-            
-            // Show loading animation
-            document.getElementById('loadingAnimation').style.display = 'flex';
+        const userCode = document.getElementById('codeInput').value.trim();
+        
+        // Show loading animation
+        document.getElementById('loadingAnimation').style.display = 'flex';
 
-            // Check if the user's code matches any of the code snippets
-            const isPlagiarized = codeSnippets.some(snippet => snippet === userCode);
+        // Check if the user's code matches any of the code snippets
+        const isPlagiarized = codeSnippets.some(snippet => snippet === userCode);
 
-            setTimeout(function() {
-                if (isPlagiarized) {
-                    window.location.href = 'plagiarizedcall.html';
-                } else {
-                    // If not plagiarized, save the code to the array
-                    codeSnippets.push(userCode);
-                    window.location.href = 'notplacall.html';
+        setTimeout(async function() {
+            if (isPlagiarized) {
+                window.location.href = 'plagiarizedcall.html';
+            } else {
+                // Make a POST request to save the code to the database
+                try {
+                    const response = await fetch('http://localhost:3000/api/save-code', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ code: userCode })
+                    });
+
+                    if (response.ok) {
+                        window.location.href = 'notplacall.html';
+                    } else {
+                        console.error('Failed to save the code snippet');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
                 }
-            }, 5000); // 5 seconds delay
-        });
+            }
+        }, 5000); // 5 seconds delay
+    });
     </script>
 </body>
 </html>

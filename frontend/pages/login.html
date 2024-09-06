@@ -12,8 +12,8 @@
         <section class="form-section">
             <h2>Login</h2>
             <form id="login-form">
-                <input type="text" placeholder="Username" required>
-                <input type="password" placeholder="Password" required>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>
             <p>Don't have an account? <a href="signup.html">Signup here</a></p>
@@ -26,6 +26,23 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/script.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get input values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Check credentials
+            if (username === 'Admin' && password === 'muj@pass') {
+                // Redirect to dashboard if credentials are correct
+                window.location.href = 'dashboard.html';
+            } else {
+                // Alert if credentials are incorrect
+                alert('Invalid username or password');
+            }
+        });
+    </script>
 </body>
 </html>
