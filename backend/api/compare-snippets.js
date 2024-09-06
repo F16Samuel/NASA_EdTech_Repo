@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
+const fs = require('fs');
 const { exec } = require('child_process');
 const authRoutes = require('./routes/authRoutes');
 const appRoutes = require('./routes/appRoutes');
@@ -38,20 +39,42 @@ app.post('/api/save-code', async (req, res) => {
     }
 });
 
-// Route to trigger plagiarism checking
-app.get('/api/compare-snippets', (req, res) => {
-    exec('python backend/scripts/compare_snippets.py', (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error executing script: ${error.message}`);
-            return res.status(500).send('Error executing script');
-        }
-        if (stderr) {
-            console.error(`Script stderr: ${stderr}`);
-            return res.status(500).send('Script error');
-        }
-        console.log(`Script output: ${stdout}`);
-        res.send(`Plagiarism check result: ${stdout}`);
-    });
+// Route to compare code snippets
+app.post('/api/compare-snippets', async (req, res) => {
+    const { snippet1, snippet2 } = req.body;
+
+    if (!snippet1 || !snippet2) {
+        return res.status(400).json({ error: 'Both code snippets are required' });
+    }
+
+    // Write the snippets to temporary files
+    const tempFile1 = path.join(__dirname, 'temp1.txt');
+    const tempFile2 = path.join(__dirname, 'temp2.txt');
+
+    try {
+        fs.writeFileSync(tempFile1, snippet1);
+        fs.writeFileSync(tempFile2, snippet2);
+
+        // Execute the Python script
+        exec(`python backend/scripts/compare_snippets.py ${tempFile1} ${tempFile2}`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Error executing script: ${error.message}`);
+                return res.status(500).json({ error: 'Error executing script' });
+            }
+            if (stderr) {
+                console.error(`Script stderr: ${stderr}`);
+                return res.status(500).json({ error: 'Script error' });
+            }
+            // Output from the Python script
+            res.json({ result: stdout.trim() });
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Error writing temporary files' });
+    } finally {
+        // Clean up temporary files
+        fs.unlinkSync(tempFile1);
+        fs.unlinkSync(tempFile2);
+    }
 });
 
 // Route handlers for authentication and app-specific routes
