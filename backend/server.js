@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const authRoutes = require('./routes/authRoutes');
 const db = require('./config/db');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const { exec } = require('child_process');
 
 const app = express();
 const port = 3000;
@@ -10,6 +13,15 @@ const port = 3000;
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware for handling sessions and cookies
+app.use(cookieParser());
+app.use(session({
+    secret: 'your_secret_key', // Replace with your secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Set to true if using HTTPS
+}));
 
 // Connect to MongoDB
 mongoose.connect(db.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -49,6 +61,17 @@ app.get('/api/compare-snippets', (req, res) => {
         }
         console.log(`Script output: ${stdout}`);
         res.send(`Plagiarism check result: ${stdout}`);
+    });
+});
+
+// Route to handle logout
+app.post('/api/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).send('Failed to logout');
+        }
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        res.status(200).send('Logged out');
     });
 });
 

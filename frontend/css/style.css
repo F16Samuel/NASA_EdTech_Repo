@@ -273,3 +273,21 @@ button:hover {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+/* Additional styles for logout page */
+.logout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    text-align: center;
+}
+
+.logout-container h1 {
+    font-size: 2em;
+    color: #3f51b5;
+}
+
+.logout-container p {
+    font-size: 1.2em;
+    color: #333;
+}
