@@ -27,6 +27,37 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="../js/script.js"></script>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get input values
+            const username = document.querySelector('input[placeholder="Username"]').value;
+            const email = document.querySelector('input[placeholder="Email"]').value;
+            const password = document.querySelector('input[placeholder="Password"]').value;
+
+            try {
+                const response = await fetch('/api/auth/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, email, password })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    // Handle signup success
+                    alert('Signup successful');
+                    window.location.href = 'login.html';
+                } else {
+                    // Handle error
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    </script>
 </body>
 </html>

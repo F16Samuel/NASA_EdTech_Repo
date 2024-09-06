@@ -1,9 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const { exec } = require('child_process');
 const authRoutes = require('./routes/authRoutes');
-const appRoutes = require('./routes/appRoutes');
 const db = require('./config/db');
 
 const app = express();
@@ -56,7 +54,6 @@ app.get('/api/compare-snippets', (req, res) => {
 
 // Route handlers for authentication and app-specific routes
 app.use('/api/auth', authRoutes);
-app.use('/api/app', appRoutes);
 
 // Serve static files from the 'frontend' directory
 app.use(express.static(path.join(__dirname, '../frontend')));

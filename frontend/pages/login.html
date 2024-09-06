@@ -27,20 +27,33 @@
 
     <!-- Scripts -->
     <script>
-        document.getElementById('login-form').addEventListener('submit', function(event) {
+        document.getElementById('login-form').addEventListener('submit', async function(event) {
             event.preventDefault(); // Prevent the default form submission
 
             // Get input values
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Check credentials
-            if (username === 'Admin' && password === 'muj@pass') {
-                // Redirect to dashboard if credentials are correct
-                window.location.href = 'dashboard.html';
-            } else {
-                // Alert if credentials are incorrect
-                alert('Invalid username or password');
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                if (response.ok) {
+                    // Store token in localStorage or handle login success
+                    localStorage.setItem('token', data.token);
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // Handle error
+                    alert(data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
         });
     </script>
